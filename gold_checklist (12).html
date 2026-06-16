@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gold Trading Checklist</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F1F4F8;
+  --surface:#FFFFFF;
+  --surface2:#F5F7FA;
+  --border:#E2E8F0;
+  --border2:#CBD5E1;
+  --text:#0F172A;
+  --text2:#475569;
+  --text3:#94A3B8;
+  --gold:#D4A017;
+  --gold-dim:rgba(212,160,23,.10);
+  --gold-border:rgba(212,160,23,.35);
+  --blue:#1A56DB;
+  --blue-bg:rgba(26,86,219,.08);
+  --blue-border:rgba(26,86,219,.25);
+  --green:#10B981;
+  --green-bg:rgba(16,185,129,.10);
+  --green-border:rgba(16,185,129,.30);
+  --amber:#F59E0B;
+  --amber-bg:rgba(245,158,11,.08);
+  --amber-border:rgba(245,158,11,.25);
+  --red:#EF4444;
+  --red-bg:rgba(239,68,68,.08);
+  --red-border:rgba(239,68,68,.25);
+  --purple:#7C3AED;
+  --cyan:#0891B2;
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Inter',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5}
+.app{display:flex;min-height:100vh}
+.sidebar{width:220px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);padding:24px 0;position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:10}
+.main{margin-left:220px;flex:1;max-width:920px;padding:40px 48px 80px}
+.sidebar-logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.sidebar-logo .mark{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--gold);letter-spacing:.12em;text-transform:uppercase}
+.sidebar-logo .title{font-size:13px;font-weight:600;color:var(--text);margin-top:2px}
+.nav-section{padding:0 12px;margin-bottom:4px}
+.nav-section-label{font-size:10px;font-weight:500;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;padding:8px 8px 4px}
+.nav-item{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer;font-size:12.5px;color:var(--text2);transition:all .15s;text-decoration:none}
+.nav-item:hover{background:var(--surface2);color:var(--text)}
+.nav-item.active{background:rgba(212,160,23,.08);color:var(--gold-dim);font-weight:500}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:var(--border2);flex-shrink:0}
+.sidebar-date{padding:16px 20px 0;border-top:1px solid var(--border);margin-top:16px}
+.sidebar-date .day{font-family:'DM Mono',monospace;font-size:11px;color:var(--text3)}
+.reset-all{margin:12px 12px 0;width:calc(100% - 24px);padding:7px;border:1px solid var(--border2);border-radius:6px;background:none;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text2);cursor:pointer;transition:all .15s}
+.reset-all:hover{background:var(--surface2);border-color:var(--gold);color:var(--gold-dim)}
+.page-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.page-header h1{font-size:22px;font-weight:600;color:var(--text);letter-spacing:-.01em}
+.page-header .subtitle{font-size:13px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace}
+.section{margin-bottom:36px;scroll-margin-top:24px}
+.section-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.section-num{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;color:var(--gold);background:rgba(212,160,23,.08);border:1px solid #EDD98A;border-radius:4px;padding:2px 6px;letter-spacing:.05em}
+.section-title{font-size:13px;font-weight:600;color:var(--text);text-transform:uppercase;letter-spacing:.06em}
+.divider{height:1px;background:var(--border);margin:32px 0}
+.radio-group{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.sub-label{font-size:11px;font-weight:500;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;margin-top:10px}
+.sub-label:first-of-type{margin-top:0}
+.rchip{display:flex;align-items:center;gap:6px;padding:6px 13px;border-radius:20px;border:1.5px solid #2A2200;background:#1A1400;cursor:pointer;font-size:12px;color:#9A8040;user-select:none;transition:all .15s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.rchip:hover{border-color:var(--gold);color:var(--gold);background:#221C00}
+.rchip .dot{width:6px;height:6px;border-radius:50%;background:#4A3800;flex-shrink:0;transition:all .15s}
+.rchip.on{background:#D4A017;border-color:#E8B820;color:#0A0800;font-weight:700;box-shadow:0 2px 8px rgba(212,160,23,.4)}
+.rchip.on .dot{background:#0A0800;border-color:transparent}
+.chip-group{display:flex;flex-wrap:wrap;gap:5px}
+.chip{display:flex;align-items:center;gap:6px;padding:5px 11px;border-radius:6px;border:1px solid var(--border2);background:var(--surface);cursor:pointer;font-size:12px;color:var(--text2);user-select:none;transition:all .15s;box-shadow:var(--shadow)}
+.chip:hover{border-color:var(--border);background:var(--surface2)}
+.chip .dot{width:7px;height:7px;border-radius:50%;border:1.5px solid var(--border2);flex-shrink:0;transition:all .15s}
+.chip.mac.on{background:var(--red-bg);border-color:var(--red-border);color:var(--red)}.chip.mac.on .dot{background:var(--red);border-color:transparent}
+.chip.t1.on{background:var(--green-bg);border-color:var(--green-border);color:var(--green)}.chip.t1.on .dot{background:var(--green);border-color:transparent}
+.chip.t2.on{background:var(--blue-bg);border-color:var(--blue-border);color:var(--blue)}.chip.t2.on .dot{background:var(--blue);border-color:transparent}
+.chip.t3.on{background:var(--amber-bg);border-color:var(--amber-border);color:var(--amber)}.chip.t3.on .dot{background:var(--amber);border-color:transparent}
+.chip.t4.on{background:var(--purple-bg,#F0EBF8);border-color:#AFA9EC;color:#3C3489}.chip.t4.on .dot{background:#534AB7;border-color:transparent}
+.chip.ctx.on{background:var(--blue-bg);border-color:var(--blue-border);color:var(--blue)}.chip.ctx.on .dot{background:var(--blue);border-color:transparent}
+.tier-row{display:flex;align-items:baseline;gap:8px;margin-bottom:8px;margin-top:14px}
+.tier-label{font-size:12px;font-weight:600}
+.tier-label.t1{color:var(--green)}.tier-label.t2{color:var(--blue)}.tier-label.t3{color:var(--amber)}.tier-label.t4{color:#3C3489}
+.tier-note{font-size:11px;color:var(--text3)}
+.warn{display:none;font-size:11px;color:var(--red);font-style:italic;margin-top:4px}
+.score-bar{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 18px;box-shadow:var(--shadow-md);flex-wrap:wrap}
+.score-item{text-align:center;min-width:60px}
+.score-num{font-family:'DM Mono',monospace;font-size:24px;font-weight:500;color:var(--text)}
+.score-lbl{font-size:10px;color:var(--text3);letter-spacing:.05em;text-transform:uppercase;margin-top:1px}
+.score-div{width:1px;height:36px;background:var(--border)}
+.verdict{flex:1;min-width:200px;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:500;border:1px solid}
+.verdict.no{background:var(--red-bg);color:var(--red);border-color:var(--red-border)}
+.verdict.a2{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-border)}
+.verdict.a1{background:var(--green-bg);color:var(--green);border-color:var(--green-border)}
+.verdict.a1-dg{background:rgba(212,160,23,.08);color:rgba(212,160,23,.12);border-color:#D4A017}
+.hard-rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.rule-chip{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;border:1px solid var(--border2);background:var(--surface);cursor:pointer;font-size:12px;color:var(--text2);user-select:none;transition:all .15s;box-shadow:var(--shadow)}
+.rule-chip:hover{background:var(--surface2)}
+.rule-chip .rdot{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--border2);flex-shrink:0;transition:all .15s}
+.rule-chip.on{background:var(--green-bg);border-color:var(--green-border);color:var(--green)}
+.rule-chip.on .rdot{background:var(--green);border-color:transparent}
+.rules-note{font-size:11px;color:var(--text3);font-style:italic;margin-bottom:10px}
+.hard-rules-warning{margin-top:10px;padding:8px 12px;background:var(--red-bg);border:1px solid var(--red-border);border-radius:8px;font-size:12px;color:var(--red);display:none}
+.exec-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px}
+.exec-card{border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:var(--shadow);background:var(--surface)}
+.exec-hdr{padding:8px 14px;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--border)}
+.exec-hdr.entry{background:var(--blue-bg);color:var(--blue)}
+.exec-hdr.sl{background:var(--amber-bg);color:var(--amber)}
+.exec-hdr.tp{background:var(--green-bg);color:var(--green)}
+.exec-opt{padding:12px 14px;border-bottom:1px solid var(--border)}
+.exec-opt:last-child{border-bottom:none}
+.exec-opt-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px}
+.exec-opt ul{list-style:none;padding:0}
+.exec-opt ul li{font-size:11px;color:var(--text2);line-height:1.6;padding-left:10px;position:relative}
+.exec-opt ul li::before{content:"·";position:absolute;left:0;color:var(--text3)}
+.ctx-group-label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin:12px 0 6px}
+.recommendation-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin-top:16px;box-shadow:var(--shadow)}
+.rec-title{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+.rec-row{display:grid;grid-template-columns:80px 1fr;gap:8px;margin-bottom:8px;align-items:start}
+.rec-row:last-child{margin-bottom:0}
+.rec-label{font-size:11px;font-weight:600;color:var(--text2);padding-top:2px}
+.rec-value{font-size:12px;color:var(--text2);line-height:1.5;background:var(--surface2);border-radius:6px;padding:5px 10px}
+.rec-value.entry-rec{border-left:3px solid var(--blue-border)}
+.rec-value.sl-rec{border-left:3px solid var(--amber-border)}
+.rec-value.tp-rec{border-left:3px solid var(--green-border)}
+.notes-area{width:100%;min-height:80px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);resize:vertical;outline:none;transition:border-color .15s;box-shadow:var(--shadow)}
+.notes-area:focus{border-color:var(--gold)}
+.notes-area::placeholder{color:var(--text3)}
+/* Day type section dark theme */
+#day-type .sub-label{color:#D4A017;letter-spacing:.08em;font-weight:600;margin-top:14px;margin-bottom:7px}
+#day-type .sub-label:first-of-type{margin-top:0}
+#day-type .radio-group{gap:6px;margin-bottom:4px}
+.sticky-score{position:fixed;top:16px;right:24px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 14px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow-md);z-index:100;font-size:12px}
+.sticky-num{font-family:'DM Mono',monospace;font-size:18px;font-weight:500;color:var(--text)}
+.sticky-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em}
+.sticky-verdict{font-size:11px;font-weight:500;padding:3px 8px;border-radius:4px}
+.sticky-verdict.no{background:var(--red-bg);color:var(--red)}
+.sticky-verdict.a2{background:var(--amber-bg);color:var(--amber)}
+.sticky-verdict.a1{background:var(--green-bg);color:var(--green)}
+.sticky-verdict.a1-dg{background:rgba(212,160,23,.08);color:rgba(212,160,23,.12)}
+.exec-opt-card{padding:10px 14px;border-bottom:1px solid var(--border);cursor:pointer;user-select:none;transition:all .15s}
+.exec-opt-card:last-child{border-bottom:none}
+.exec-opt-card:hover{background:var(--surface2)}
+.exec-opt-title{font-size:12px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.eodot{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--border2);flex-shrink:0;transition:all .15s}
+.exec-opt-desc{font-size:11px;color:var(--text2);line-height:1.5;padding-left:14px}
+.exec-opt-card.on-entry{background:var(--blue-bg)}
+.exec-opt-card.on-entry .exec-opt-title{color:var(--blue)}
+.exec-opt-card.on-entry .eodot{background:var(--blue);border-color:transparent}
+.exec-opt-card.on-entry .exec-opt-desc{color:var(--blue)}
+.exec-opt-card.on-sl{background:var(--amber-bg)}
+.exec-opt-card.on-sl .exec-opt-title{color:var(--amber)}
+.exec-opt-card.on-sl .eodot{background:var(--amber);border-color:transparent}
+.exec-opt-card.on-sl .exec-opt-desc{color:var(--amber)}
+.exec-opt-card.on-tp{background:var(--green-bg)}
+.exec-opt-card.on-tp .exec-opt-title{color:var(--green)}
+.exec-opt-card.on-tp .eodot{background:var(--green);border-color:transparent}
+.exec-opt-card.on-tp .exec-opt-desc{color:var(--green)}
+@media(max-width:520px){.exec-opt-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="mark">XAU/USD</div>
+    <div class="title">Trading Checklist</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">Session</div>
+    <a class="nav-item active" href="#day-type"><div class="nav-dot"></div>01 · Day type</a>
+    <a class="nav-item" href="#macro"><div class="nav-dot"></div>02 · Macro context</a>
+    <a class="nav-item" href="#confluences"><div class="nav-dot"></div>03 · Confluences</a>
+    <a class="nav-item" href="#score"><div class="nav-dot"></div>04 · Score & verdict</a>
+    <a class="nav-item" href="#trade-context"><div class="nav-dot"></div>05 · Trade context</a>
+    <a class="nav-item" href="#execution"><div class="nav-dot"></div>06 · Execution rec</a>
+    <a class="nav-item" href="#level-validity"><div class="nav-dot"></div>07 · Level validity</a>
+    <a class="nav-item" href="#notes"><div class="nav-dot"></div>08 · Notes</a>
+  </div>
+  <div class="sidebar-date"><div class="day" id="sidebar-date"></div></div>
+  <button class="reset-all" onclick="resetAll()">↺ Reset session</button>
+</nav>
+
+<div class="sticky-score">
+  <div><div class="sticky-num" id="sticky-num">0</div><div class="sticky-label">pts</div></div>
+  <div class="sticky-verdict no" id="sticky-verdict">No trade</div>
+</div>
+
+<main class="main">
+  <div class="page-header">
+    <h1>Gold Pre-Trade Checklist</h1>
+    <div class="subtitle" id="header-date"></div>
+  </div>
+
+  <!-- 01 DAY TYPE -->
+  <div class="section" id="day-type" style="background:#100E00;border:1.5px solid #3A2E00;border-radius:14px;padding:20px 22px;margin-bottom:36px;">
+    <div class="section-header" style="margin-bottom:16px"><span class="section-num" style="background:#2A2000;border-color:#6A5000;color:var(--gold)">01</span><span class="section-title" style="color:var(--gold);letter-spacing:.08em">Day Type</span></div>
+
+    <div class="sub-label">Session mode</div>
+    <div class="radio-group">
+      <div class="rchip" data-group="mode"><div class="dot"></div>Breakout mode</div>
+      <div class="rchip" data-group="mode"><div class="dot"></div>Range mode</div>
+      <div class="rchip" data-group="mode"><div class="dot"></div>Trend continuation</div>
+      <div class="rchip" data-group="mode"><div class="dot"></div>Distribution / topping</div>
+    </div>
+
+    <div class="sub-label">MP day type</div>
+    <div class="radio-group">
+      <div class="rchip" data-group="mp"><div class="dot"></div>Trend day</div>
+      <div class="rchip" data-group="mp"><div class="dot"></div>Range day</div>
+      <div class="rchip" data-group="mp"><div class="dot"></div>Neutral day</div>
+      <div class="rchip" data-group="mp"><div class="dot"></div>News / volatile day</div>
+    </div>
+
+    <div class="sub-label">Open type</div>
+    <div class="radio-group">
+      <div class="rchip" data-group="open"><div class="dot"></div>Market not open yet</div>
+      <div class="rchip" data-group="open"><div class="dot"></div>Open drive</div>
+      <div class="rchip" data-group="open"><div class="dot"></div>Open test drive</div>
+      <div class="rchip" data-group="open"><div class="dot"></div>Open rejection reverse</div>
+      <div class="rchip" data-group="open"><div class="dot"></div>Open auction</div>
+    </div>
+
+    <div class="sub-label">Trend direction — Recent (LTF)</div>
+    <div class="radio-group">
+      <div class="rchip" data-group="trend-recent"><div class="dot"></div>With recent trend</div>
+      <div class="rchip" data-group="trend-recent"><div class="dot"></div>Against recent trend</div>
+    </div>
+
+    <div class="sub-label">Trend direction — HTF (H4 / Daily)</div>
+    <div class="radio-group">
+      <div class="rchip" data-group="trend-htf"><div class="dot"></div>With HTF trend</div>
+      <div class="rchip" data-group="trend-htf"><div class="dot"></div>Against HTF trend</div>
+    </div>
+
+    <div class="sub-label">Trend alignment</div>
+    <div class="radio-group">
+      <div class="rchip" data-group="trend-align"><div class="dot"></div>LTF and HTF aligned — strongest setup</div>
+      <div class="rchip" data-group="trend-align"><div class="dot"></div>LTF and HTF conflicting — reduce size</div>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 02 MACRO -->
+  <div class="section" id="macro">
+    <div class="section-header"><span class="section-num">02</span><span class="section-title">Macro Context</span></div>
+    <div style="font-size:11px;color:var(--text3);font-style:italic;margin-bottom:10px">Each = 2 pts · need at least 1 for A1 · without macro confirmation reduce size</div>
+    <div class="chip-group">
+      <div class="chip mac" data-tier="mac" data-pts="2"><div class="dot"></div>Real yields in sync</div>
+      <div class="chip mac" data-tier="mac" data-pts="2"><div class="dot"></div>Bonds / yields in sync</div>
+      <div class="chip mac" data-tier="mac" data-pts="2"><div class="dot"></div>DXY in sync</div>
+      <div class="chip mac" data-tier="mac" data-pts="2"><div class="dot"></div>Oil in sync</div>
+      <div class="chip mac" data-tier="mac" data-pts="2"><div class="dot"></div>M/F context in sync</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 03 CONFLUENCES + HARD RULES TIER 4 -->
+  <div class="section" id="confluences">
+    <div class="section-header"><span class="section-num">03</span><span class="section-title">Confluences</span></div>
+
+    <div class="tier-row"><span class="tier-label t1">Tier 1 — big ones</span><span class="tier-note">each = 2 pts · need 2 of first 3</span></div>
+    <div class="chip-group">
+      <div class="chip t1" data-tier="t1" data-pts="2" data-key="lvn"><div class="dot"></div>LVN</div>
+      <div class="chip t1" data-tier="t1" data-pts="2" data-key="fib"><div class="dot"></div>Fib level</div>
+      <div class="chip t1" data-tier="t1" data-pts="2" data-key="div2"><div class="dot"></div>Divergence</div>
+      <div class="chip t1" data-tier="t1" data-pts="2"><div class="dot"></div>DXY in sync</div>
+      <div class="chip t1" data-tier="t1" data-pts="2"><div class="dot"></div>Bonds in sync</div>
+    </div>
+    <div class="warn" id="t1-warn">Need at least 2 of LVN, Fib, or Divergence</div>
+
+    <div class="tier-row"><span class="tier-label t2">Tier 2 — second row</span><span class="tier-note">each = 1 pt · need 1+</span></div>
+    <div class="chip-group">
+      <div class="chip t2" data-tier="t2" data-pts="1"><div class="dot"></div>KL</div>
+      <div class="chip t2" data-tier="t2" data-pts="1"><div class="dot"></div>Psych level</div>
+      <div class="chip t2" data-tier="t2" data-pts="1"><div class="dot"></div>TL</div>
+      <div class="chip t2" data-tier="t2" data-pts="1"><div class="dot"></div>EMA / MA</div>
+    </div>
+
+    <div class="tier-row"><span class="tier-label t3">Tier 3 — confirmation</span><span class="tier-note">each = 1 pt · bonus</span></div>
+    <div class="chip-group">
+      <div class="chip t3" data-tier="t3" data-pts="1"><div class="dot"></div>Prev day open / POC</div>
+      <div class="chip t3" data-tier="t3" data-pts="1"><div class="dot"></div>Prev POC retest</div>
+      <div class="chip t3" data-tier="t3" data-pts="1"><div class="dot"></div>Sweep</div>
+      <div class="chip t3" data-tier="t3" data-pts="1"><div class="dot"></div>Fail new low / high</div>
+      <div class="chip t3" data-tier="t3" data-pts="1"><div class="dot"></div>3 nice touches</div>
+      <div class="chip t3" data-tier="t3" data-pts="1"><div class="dot"></div>RSI H4-D stable</div>
+      <div class="chip t3" data-tier="t3" data-pts="1"><div class="dot"></div>15m close favorable</div>
+      <div class="chip t3" data-tier="t3" data-pts="1"><div class="dot"></div>RSI 5m re-stabilised</div>
+      <div class="chip t3" data-tier="t3" data-pts="1"><div class="dot"></div>EMA / MA retest</div>
+      <div class="chip t3" data-tier="t3" data-pts="1"><div class="dot"></div>Tech context in sync</div>
+      <div class="chip t3" data-tier="t3" data-pts="1"><div class="dot"></div>HTF RSI favorable</div>
+      <div class="chip t3" data-tier="t3" data-pts="1"><div class="dot"></div>3m divergence</div>
+      <div class="chip t3" data-tier="t3" data-pts="1"><div class="dot"></div>Open / POC retest</div>
+      <div class="chip t3" data-tier="t3" data-pts="1"><div class="dot"></div>LVA entry</div>
+      <div class="chip t3" data-tier="t3" data-pts="1"><div class="dot"></div>Weak price action</div>
+      <div class="chip t3" data-tier="t3" data-pts="1"><div class="dot"></div>Overextension visible</div>
+    </div>
+
+    <div class="tier-row"><span class="tier-label t4">Tier 4 — hard rules</span><span class="tier-note">must all pass · if any fail = A1 downgraded regardless of score</span></div>
+    <div style="font-size:11px;color:var(--text3);font-style:italic;margin-bottom:8px">2 trades max per day · Cannot be working or unfocused · Tap to confirm each</div>
+    <div class="hard-rules-grid">
+      <div class="rule-chip" data-rule="hr"><div class="rdot"></div>Not within 10m of 9:30am</div>
+      <div class="rule-chip" data-rule="hr"><div class="rdot"></div>In valid window — 6am–2pm or 7–9pm</div>
+      <div class="rule-chip" data-rule="hr"><div class="rdot"></div>Not Sunday night</div>
+      <div class="rule-chip" data-rule="hr"><div class="rdot"></div>No major event within 2h</div>
+      <div class="rule-chip" data-rule="hr"><div class="rdot"></div>Under 2 trades today</div>
+      <div class="rule-chip" data-rule="hr"><div class="rdot"></div>At desk and fully focused</div>
+    </div>
+    <div class="hard-rules-warning" id="hr-warning">⚠ Hard rules not all confirmed — A1 downgraded to A2 regardless of score</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 04 SCORE -->
+  <div class="section" id="score">
+    <div class="section-header"><span class="section-num">04</span><span class="section-title">Score & Verdict</span></div>
+    <div class="score-bar">
+      <div class="score-item"><div class="score-num" id="total-score">0</div><div class="score-lbl">total pts</div></div>
+      <div class="score-div"></div>
+      <div class="score-item"><div class="score-num" id="mac-score">0</div><div class="score-lbl">macro pts</div></div>
+      <div class="score-div"></div>
+      <div class="score-item"><div class="score-num" id="t1-core">0</div><div class="score-lbl">core T1</div></div>
+      <div class="score-div"></div>
+      <div class="score-item"><div class="score-num" id="hr-count">0/6</div><div class="score-lbl">hard rules</div></div>
+      <div class="score-div"></div>
+      <div class="verdict no" id="verdict">No trade — requirements not met</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 05 TRADE CONTEXT -->
+  <div class="section" id="trade-context">
+    <div class="section-header"><span class="section-num">05</span><span class="section-title">Trade Context</span></div>
+    <div style="font-size:11px;color:var(--text3);font-style:italic;margin-bottom:14px">Select what applies to your current setup — execution recommendation updates automatically below</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+
+      <!-- DIRECTION & TREND ALIGNMENT -->
+      <div style="border:1px solid var(--border);border-radius:10px;padding:14px;background:var(--surface);box-shadow:var(--shadow)">
+        <div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px">Direction & Trend Alignment</div>
+        <div class="chip-group">
+          <div class="chip ctx" data-ctx="dir" data-val="with-h4d"><div class="dot"></div>With H4–D trend</div>
+          <div class="chip ctx" data-ctx="dir" data-val="against-h4d"><div class="dot"></div>Against H4–D trend</div>
+          <div class="chip ctx" data-ctx="dir" data-val="with-recent"><div class="dot"></div>With recent trend</div>
+          <div class="chip ctx" data-ctx="dir" data-val="against-recent"><div class="dot"></div>Against recent trend</div>
+          <div class="chip ctx" data-ctx="dir" data-val="reversal"><div class="dot"></div>Reversal trade</div>
+          <div class="chip ctx" data-ctx="dir" data-val="continuation"><div class="dot"></div>Continuation</div>
+          <div class="chip ctx" data-ctx="dir" data-val="breakout"><div class="dot"></div>Breakout play</div>
+          <div class="chip ctx" data-ctx="dir" data-val="range-fade"><div class="dot"></div>Range fade</div>
+        </div>
+      </div>
+
+      <!-- LEVEL & ZONE TYPE -->
+      <div style="border:1px solid var(--border);border-radius:10px;padding:14px;background:var(--surface);box-shadow:var(--shadow)">
+        <div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px">Level & Zone Type</div>
+        <div class="chip-group">
+          <div class="chip ctx" data-ctx="lvl" data-val="major-kl"><div class="dot"></div>Major KL / HTF level</div>
+          <div class="chip ctx" data-ctx="lvl" data-val="intraday"><div class="dot"></div>Intraday level</div>
+          <div class="chip ctx" data-ctx="lvl" data-val="swing-htf"><div class="dot"></div>Swing zone / HTF</div>
+          <div class="chip ctx" data-ctx="lvl" data-val="lvn"><div class="dot"></div>LVN — fast move zone</div>
+          <div class="chip ctx" data-ctx="lvl" data-val="psych"><div class="dot"></div>Psychological level</div>
+        </div>
+      </div>
+
+      <!-- CONFIRMATION & SETUP QUALITY -->
+      <div style="border:1px solid var(--border);border-radius:10px;padding:14px;background:var(--surface);box-shadow:var(--shadow)">
+        <div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px">Confirmation & Setup Quality</div>
+        <div class="chip-group">
+          <div class="chip ctx" data-ctx="conf" data-val="swept"><div class="dot"></div>Sweep confirmed</div>
+          <div class="chip ctx" data-ctx="conf" data-val="no-sweep"><div class="dot"></div>No sweep yet</div>
+          <div class="chip ctx" data-ctx="conf" data-val="divergence"><div class="dot"></div>Divergence present</div>
+          <div class="chip ctx" data-ctx="conf" data-val="strong-reaction"><div class="dot"></div>Strong reaction at level</div>
+          <div class="chip ctx" data-ctx="conf" data-val="weak-reaction"><div class="dot"></div>Weak reaction at level</div>
+        </div>
+      </div>
+
+      <!-- SESSION & RISK CONDITIONS -->
+      <div style="border:1px solid var(--border);border-radius:10px;padding:14px;background:var(--surface);box-shadow:var(--shadow)">
+        <div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px">Session & Risk Conditions</div>
+        <div class="chip-group">
+          <div class="chip ctx" data-ctx="sess" data-val="open-drive"><div class="dot"></div>Open drive — momentum</div>
+          <div class="chip ctx" data-ctx="sess" data-val="corr-sync"><div class="dot"></div>Correlators all in sync</div>
+          <div class="chip ctx" data-ctx="sess" data-val="corr-mixed"><div class="dot"></div>Correlators mixed</div>
+          <div class="chip ctx" data-ctx="sess" data-val="event-near"><div class="dot"></div>Major event within 2h</div>
+          <div class="chip ctx" data-ctx="sess" data-val="room-to-go"><div class="dot"></div>Clear room to next structure</div>
+          <div class="chip ctx" data-ctx="sess" data-val="near-target"><div class="dot"></div>Near a target / resistance</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 06 EXECUTION RECOMMENDATION -->
+  <div class="section" id="execution">
+    <div class="section-header"><span class="section-num">06</span><span class="section-title">Execution Recommendation</span></div>
+    <div style="border:1px solid var(--border);border-radius:10px;padding:14px 16px;background:var(--surface);box-shadow:var(--shadow)">
+      <div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px">Personalised based on your trade context</div>
+      <div id="exec-rec" style="font-size:12.5px;color:var(--text3);font-style:italic;line-height:1.7">Select trade context above to get your entry, stop and target recommendation.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 07 LEVEL VALIDITY -->
+  <div class="section" id="level-validity">
+    <div class="section-header"><span class="section-num">07</span><span class="section-title">Level Validity Inspection</span></div>
+    <div style="font-size:11px;color:var(--text3);font-style:italic;margin-bottom:14px">Run through all stages before deciding entry type. One failed stage = stop.</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+      <div style="border:1.5px solid var(--green-border);border-radius:10px;overflow:hidden;background:var(--surface)">
+        <div style="background:var(--green-bg);padding:8px 14px;font-size:10px;font-weight:600;color:var(--green);letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--green-border)">✓ Right away — all 4 present</div>
+        <div style="padding:12px 14px">
+          <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)"><div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px">1 — Confluences stacked at level</div><div style="font-size:11px;color:var(--text2);line-height:1.5">Fib or LVN + at least one other · with the trend makes it even better</div></div>
+          <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)"><div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px">2 — Approach was impulsive</div><div style="font-size:11px;color:var(--text2);line-height:1.5">Price came fast and directionally · overextended into the level · not a slow grind</div></div>
+          <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)"><div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px">3 — Level is fresh</div><div style="font-size:11px;color:var(--text2);line-height:1.5">First or second touch · each touch weakens a level · 3+ touches = wait for sweep</div></div>
+          <div><div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px">4 — Correlators in sync</div><div style="font-size:11px;color:var(--text2);line-height:1.5">At least 2 of DXY, yields, oil in trade direction · mixed = wait</div></div>
+        </div>
+      </div>
+      <div style="border:1.5px solid var(--amber-border);border-radius:10px;overflow:hidden;background:var(--surface)">
+        <div style="background:var(--amber-bg);padding:8px 14px;font-size:10px;font-weight:600;color:var(--amber);letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--amber-border)">⏳ Wait — any of these present</div>
+        <div style="padding:12px 14px">
+          <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)"><div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px">1 — Confluences not stacked</div><div style="font-size:11px;color:var(--text2);line-height:1.5">One element only · wait for reaction to confirm level respected</div></div>
+          <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)"><div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px">2 — Slow grind approach</div><div style="font-size:11px;color:var(--text2);line-height:1.5">3+ touches · sideways into level · wait for sweep first</div></div>
+          <div style="margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)"><div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px">3 — Wrong timing</div><div style="font-size:11px;color:var(--text2);line-height:1.5">Mid-session 11:30–1:30pm · against trend needs more time</div></div>
+          <div><div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px">4 — Correlators mixed or opposing</div><div style="font-size:11px;color:var(--text2);line-height:1.5">DXY or yields opposing · wait for 15m close to see if they turn</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="border:1.5px solid var(--red-border);border-radius:10px;overflow:hidden;background:var(--surface)">
+      <div style="background:var(--red-bg);padding:8px 14px;font-size:10px;font-weight:600;color:var(--red);letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--red-border)">✗ Discard — level is invalid</div>
+      <div style="padding:12px 14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+        <div><div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px">Broke through with momentum</div><div style="font-size:11px;color:var(--text2);line-height:1.5">Full candle closing beyond · level now flipped</div></div>
+        <div><div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px">Reaction in wrong direction</div><div style="font-size:11px;color:var(--text2);line-height:1.5">Touched and continued through · thesis rejected</div></div>
+        <div><div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px">5th+ touch or no room</div><div style="font-size:11px;color:var(--text2);line-height:1.5">Level exhausted · or less than 2:1 R:R</div></div>
+        <div><div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px">Middle of range</div><div style="font-size:11px;color:var(--text2);line-height:1.5">No edge at discovery value · extremities only</div></div>
+        <div><div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px">HTF context opposing</div><div style="font-size:11px;color:var(--text2);line-height:1.5">H4 or daily breakdown · higher TF overrides</div></div>
+        <div><div style="font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px">Weak reaction at big level</div><div style="font-size:11px;color:var(--text2);line-height:1.5">Small doji · big levels react strongly when respected</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- NOTES -->
+  <div class="section" id="notes">
+    <div class="section-header"><span class="section-num">08</span><span class="section-title">Session Notes</span></div>
+    <textarea class="notes-area" id="session-notes" placeholder="Pre-market read, key levels, what to watch today..."></textarea>
+    <div style="font-size:11px;color:var(--text3);margin-top:6px">Notes auto-save to your browser</div>
+  </div>
+
+</main>
+</div>
+
+<script>
+const now=new Date();
+const opts={weekday:'long',year:'numeric',month:'long',day:'numeric'};
+const dateStr=now.toLocaleDateString('en-US',opts);
+document.getElementById('sidebar-date').textContent=dateStr;
+document.getElementById('header-date').textContent=dateStr.toUpperCase();
+const stateKey='gold_checklist_'+now.toISOString().slice(0,10);
+
+document.querySelectorAll('.rchip').forEach(c=>{
+  c.addEventListener('click',()=>{
+    const g=c.dataset.group;
+    document.querySelectorAll(`.rchip[data-group="${g}"]`).forEach(x=>x.classList.remove('on'));
+    c.classList.toggle('on');
+    saveState();
+  });
+});
+
+document.querySelectorAll('.chip[data-tier]').forEach(c=>{
+  c.addEventListener('click',()=>{c.classList.toggle('on');update();saveState();});
+});
+
+document.querySelectorAll('.chip[data-ctx]').forEach(c=>{
+  c.addEventListener('click',()=>{c.classList.toggle('on');updateRec();saveState();});
+});
+
+document.querySelectorAll('.rule-chip').forEach(c=>{
+  c.addEventListener('click',()=>{c.classList.toggle('on');update();saveState();});
+});
+
+document.querySelectorAll('.nav-item').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
+    a.classList.add('active');
+    const target=document.querySelector(a.getAttribute('href'));
+    if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+
+const notesEl=document.getElementById('session-notes');
+notesEl.addEventListener('input',saveState);
+
+function getT1Core(){let n=0;document.querySelectorAll('.chip[data-key]').forEach(c=>{if(c.classList.contains('on'))n++;});return n;}
+function getMac(){let n=0;document.querySelectorAll('.chip[data-tier="mac"]').forEach(c=>{if(c.classList.contains('on'))n++;});return n;}
+function getScore(){let t=0;document.querySelectorAll('.chip[data-pts]').forEach(c=>{if(c.classList.contains('on')&&c.dataset.tier!=='rule')t+=parseInt(c.dataset.pts);});return t;}
+function getHRCount(){let n=0;document.querySelectorAll('.rule-chip[data-rule="hr"]').forEach(c=>{if(c.classList.contains('on'))n++;});return n;}
+function allHRPassed(){return getHRCount()===6;}
+
+function update(){
+  const score=getScore(),mac=getMac(),core=getT1Core(),hr=getHRCount();
+  document.getElementById('total-score').textContent=score;
+  document.getElementById('mac-score').textContent=mac;
+  document.getElementById('t1-core').textContent=core;
+  document.getElementById('hr-count').textContent=hr+'/6';
+  document.getElementById('sticky-num').textContent=score;
+
+  const w=document.getElementById('t1-warn');
+  w.style.display=(core>0&&core<2)?'block':'none';
+
+  const hrWarn=document.getElementById('hr-warning');
+  const hrAllPass=allHRPassed();
+  hrWarn.style.display=(!hrAllPass&&hr>0)?'block':'none';
+
+  const t2=document.querySelectorAll('.chip[data-tier="t2"].on').length;
+  const v=document.getElementById('verdict');
+  const sv=document.getElementById('sticky-verdict');
+
+  const baseA1=score>=6&&core>=2&&t2>=1;
+  const baseA2=score>=4&&core>=2;
+
+  if(baseA1&&hrAllPass){
+    v.className='verdict a1';v.textContent='A1 setup — trade valid';
+    sv.className='sticky-verdict a1';sv.textContent='A1';
+  } else if(baseA1&&!hrAllPass){
+    v.className='verdict no';v.textContent='Not A1 — hard rules incomplete ('+hr+'/6 confirmed)';
+    sv.className='sticky-verdict no';sv.textContent='No trade';
+  } else if(!baseA1&&hrAllPass){
+    v.className='verdict no';v.textContent='Not A1 — not enough confluences';
+    sv.className='sticky-verdict no';sv.textContent='No trade';
+  } else {
+    v.className='verdict no';v.textContent='No trade — requirements not met';
+    sv.className='sticky-verdict no';sv.textContent='No trade';
+  }
+}
+
+function getCtx(g){const v=[];document.querySelectorAll(`.chip[data-ctx="${g}"].on`).forEach(c=>v.push(c.dataset.val));return v;}
+
+function updateRec(){
+  const dir=getCtx('dir'),lvl=getCtx('lvl'),conf=getCtx('conf'),sess=getCtx('sess');
+  const el=document.getElementById('exec-rec');
+  if(!dir.length&&!lvl.length&&!conf.length&&!sess.length){
+    el.innerHTML='<span style="color:var(--text3);font-style:italic">Select trade context above to get your entry, stop and target recommendation.</span>';
+    return;
+  }
+  const withHTF=dir.includes('with-h4d')||dir.includes('with-htf')||dir.includes('with-recent');
+  const againstHTF=dir.includes('against-h4d')||dir.includes('against-htf')||dir.includes('against-recent');
+  const reversal=dir.includes('reversal');
+  const breakout=dir.includes('breakout');
+  const continuation=dir.includes('continuation');
+  const rangeFade=dir.includes('range-fade');
+  const majorKL=lvl.includes('major-kl')||lvl.includes('swing-htf');
+  const intraday=lvl.includes('intraday')||lvl.includes('lvn');
+  const swept=conf.includes('swept');
+  const noSweep=conf.includes('no-sweep');
+  const div=conf.includes('divergence');
+  const strongR=conf.includes('strong-reaction');
+  const weakR=conf.includes('weak-reaction');
+  const openDrive=sess.includes('open-drive');
+  const corrSync=sess.includes('corr-sync');
+  const corrMixed=sess.includes('corr-mixed');
+  const eventNear=sess.includes('event-near');
+  const roomToGo=sess.includes('room-to-go');
+  const nearTarget=sess.includes('near-target');
+
+  // ENTRY
+  let entry='Wait for confirmation — context not yet complete';
+  if(eventNear) entry='Wait for 15m close after the event — do not enter before the binary drops';
+  else if(breakout&&(strongR||swept)&&corrSync) entry='Right away on the confirmation candle close above the broken level — breakout with correlators in sync';
+  else if((withHTF||continuation)&&(strongR||swept)&&corrSync&&!weakR) entry='Right away — with H4–D trend, strong reaction at level, correlators all in sync. Enter on touch or first pullback candle';
+  else if(openDrive&&withHTF&&!weakR) entry='Right away — open drive momentum with the trend. Enter on first pullback to level, do not chase the move';
+  else if((reversal||againstHTF)&&swept&&div) entry='Enter on reclaim after the sweep — divergence confirmed. Wait for 15m close back above the level before entering';
+  else if((reversal||againstHTF)&&noSweep) entry='Wait for sweep first — against trend or reversal without a sweep is not ready. Mark the level and wait';
+  else if(weakR||corrMixed) entry='Wait for 15m close to confirm direction — weak reaction or mixed correlators require a confirmation candle before entry';
+  else if(rangeFade) entry='Wait for extremity + sweep or divergence — range fade needs both a clean level and a stop run before entry';
+  else if(withHTF&&!corrSync) entry='Wait for correlators to align — setup is technically valid but macro not confirming yet';
+  else entry='Wait for structure confirmation — need sweep or strong reaction at level with correlators aligned';
+
+  // STOP
+  let stop='Structural stop — beyond nearest swing high or low';
+  if(majorKL&&againstHTF) stop='Wide stop — major KL against trend. Place SL beyond the full level zone. SL goes beyond the sweep low, not the KL itself. Allow room for overextension';
+  else if(majorKL&&(withHTF||continuation)) stop='Wide stop — major KL or swing zone even with trend. Price can wick through before respecting. No need for perfect price on wide zones';
+  else if(intraday&&withHTF&&!eventNear) stop='Tight structural stop — intraday level with trend. Clean structural level just below entry. High conviction setup allows tight SL';
+  else if(reversal||againstHTF) stop='Wide stop — reversal and counter-trend trades need room to breathe. Overextension can extend before turning. Never use tight SL against trend';
+  else if(breakout) stop='Structural stop just below the broken level — if price closes back below the breakout point the thesis is wrong, exit';
+  else if(eventNear) stop='Wider than normal — event risk nearby. Give extra buffer or reduce position size instead of widening stop excessively';
+
+  // TARGET
+  let tp='Next structure — exit at the next key resistance or support';
+  if(eventNear) tp='Pre-event exit — take profit before the event fires regardless of where price is. Never hold through a binary';
+  else if(nearTarget) tp='Small TP — price is near a major opposing level. Take it fast. Next structure only. Do not hold for a swing from a poor location';
+  else if(againstHTF||reversal) tp='Small TP — 38 fib max when against the H4–D trend. Take it fast. This is a momentum trade, not a position. Do not overstay';
+  else if(continuation&&!roomToGo) tp='Small TP — continuation momentum trade. Smaller target. Take it before the move fades or you reach the next structure';
+  else if((withHTF||continuation)&&roomToGo&&(strongR||swept)&&corrSync) tp='Big TP — with trend, room confirmed, setup A1. Partial scale at T1 then trail stop to BE and let the rest run to T2';
+  else if(breakout&&roomToGo) tp='Big TP — breakout with clear room above. First target is next major structure. Partial at 50% of the move then trail the rest';
+  else if(majorKL&&roomToGo) tp='Swing TP — major zone with room to the next level. Hold for the full structural move. Partial scale at the midpoint, let rest run';
+
+  el.innerHTML=`
+    <div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)">
+      <span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--blue)">Entry</span>
+      <div style="margin-top:4px;font-size:12.5px;color:var(--text2);line-height:1.6">${entry}</div>
+    </div>
+    <div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)">
+      <span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--amber)">Stop</span>
+      <div style="margin-top:4px;font-size:12.5px;color:var(--text2);line-height:1.6">${stop}</div>
+    </div>
+    <div>
+      <span style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--green)">Target</span>
+      <div style="margin-top:4px;font-size:12.5px;color:var(--text2);line-height:1.6">${tp}</div>
+    </div>
+  `;
+}
+
+function saveState(){
+  const state={chips:{},rchips:{},ctx:{},rules:{},notes:notesEl.value};
+  document.querySelectorAll('.chip[data-tier]').forEach((c,i)=>{state.chips[i]=c.classList.contains('on');});
+  document.querySelectorAll('.rchip').forEach((c,i)=>{state.rchips[i]=c.classList.contains('on');});
+  document.querySelectorAll('.chip[data-ctx]').forEach((c,i)=>{state.ctx[i]=c.classList.contains('on');});
+  document.querySelectorAll('.rule-chip').forEach((c,i)=>{state.rules[i]=c.classList.contains('on');});
+  localStorage.setItem(stateKey,JSON.stringify(state));
+}
+
+function loadState(){
+  const raw=localStorage.getItem(stateKey);
+  if(!raw) return;
+  try{
+    const s=JSON.parse(raw);
+    document.querySelectorAll('.chip[data-tier]').forEach((c,i)=>{if(s.chips&&s.chips[i])c.classList.add('on');});
+    document.querySelectorAll('.rchip').forEach((c,i)=>{if(s.rchips&&s.rchips[i])c.classList.add('on');});
+    document.querySelectorAll('.chip[data-ctx]').forEach((c,i)=>{if(s.ctx&&s.ctx[i])c.classList.add('on');});
+    document.querySelectorAll('.rule-chip').forEach((c,i)=>{if(s.rules&&s.rules[i])c.classList.add('on');});
+    if(s.notes) notesEl.value=s.notes;
+    update();updateRec();
+  }catch(e){}
+}
+
+function resetAll(){
+  document.querySelectorAll('.chip.on,.rchip.on,.rule-chip.on').forEach(c=>c.classList.remove('on'));
+  notesEl.value='';
+  localStorage.removeItem(stateKey);
+  update();updateRec();
+}
+
+loadState();
+
+window.addEventListener('scroll',()=>{
+  const sections=['day-type','macro','confluences','score','trade-context','execution','level-validity','notes'];
+  let current=sections[0];
+  sections.forEach(id=>{const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<120)current=id;});
+  document.querySelectorAll('.nav-item').forEach(a=>{a.classList.toggle('active',a.getAttribute('href')==='#'+current);});
+});
+</script>
+</body>
+</html>
